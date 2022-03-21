@@ -8,7 +8,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-
     @IBOutlet weak private var resultLabel: UILabel!
     @IBOutlet weak private var slider: UISlider!
     private var targetValue = 0
@@ -43,6 +42,7 @@ extension ViewController {
             self.targetValue = Int.random(in: 1...100)
             self.resultLabel.text = "\(self.targetValue)"
             self.slider.value = Float(0.5)
+            self.currentValue = Int(self.slider.value * 100)
         }
         alert.addAction(action)
         self.present(alert, animated: true)
