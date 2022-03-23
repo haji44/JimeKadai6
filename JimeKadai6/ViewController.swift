@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func judgeButtonTapped(_ sender: UIButton) {
-        showAlert(isTrue: Int(slider.value) == targetValue, value: Int(slider.value))
+        showAlert(isCorrect: Int(slider.value) == targetValue, value: Int(slider.value))
     }
 
     private func resetGame() {
@@ -36,9 +36,9 @@ class ViewController: UIViewController {
 }
 
 extension ViewController {
-    func showAlert(isTrue: Bool, value: Int) {
+    func showAlert(isCorrect: Bool, value: Int) {
         let message = "あなたの値: \(value)"
-        let firstLine = isTrue ? "あたり!" : "はずれ!"
+        let firstLine = isCorrect ? "あたり!" : "はずれ!"
         let alert = UIAlertController(title: "結果",
                                       message: "\(firstLine)\n\(message)",
                                       preferredStyle: .alert)
