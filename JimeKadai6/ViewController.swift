@@ -11,38 +11,39 @@ class ViewController: UIViewController {
     @IBOutlet weak private var resultLabel: UILabel!
     @IBOutlet weak private var slider: UISlider!
     private var targetValue = 0
-    private var currentValue = 0
+
+    private let minimumValue = 1
+    private let maximumValue = 100
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupInitialState()
+
+        slider.minimumValue = Float(minimumValue)
+        slider.maximumValue = Float(maximumValue)
+
+        resetGame()
     }
 
-    @IBAction private func sliderValueChage(_ sender: UISlider) {
-        currentValue = Int(sender.value * 100)
-    }
     @IBAction private func judgeButtonTapped(_ sender: UIButton) {
-        showAlert(isTrue: currentValue == targetValue, value: currentValue)
+        showAlert(isTrue: Int(slider.value) == targetValue, value: Int(slider.value))
     }
-    private func setupInitialState() {
-        currentValue = Int(slider.value * 100)
-        targetValue = Int.random(in: 1...100)
+
+    private func resetGame() {
+        targetValue = Int.random(in: minimumValue...maximumValue)
         resultLabel.text = "\(targetValue)"
+        slider.value = Float((minimumValue + maximumValue) / 2)
     }
 }
 
 extension ViewController {
     func showAlert(isTrue: Bool, value: Int) {
         let message = "あなたの値: \(value)"
+        let firstLine = isTrue ? "あたり!" : "はずれ!"
         let alert = UIAlertController(title: "結果",
-                                      message: isTrue ? "あたり!\n\(message)" : "はずれ!\n\(message)",
+                                      message: "\(firstLine)\n\(message)",
                                       preferredStyle: .alert)
-        let action = UIAlertAction(title: "再挑戦", style: .default) { [weak self] value in
-            guard let self = self else { return }
-            self.targetValue = Int.random(in: 1...100)
-            self.resultLabel.text = "\(self.targetValue)"
-            self.slider.value = Float(0.5)
-            self.currentValue = Int(self.slider.value * 100)
+        let action = UIAlertAction(title: "再挑戦", style: .default) { [weak self] _ in
+            self?.resetGame()
         }
         alert.addAction(action)
         self.present(alert, animated: true)
